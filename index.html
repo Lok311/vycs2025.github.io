@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greenique - Lõi Lọc Nước Tái Chế</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #10b981;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .active-nav::after {
+            width: 100%;
+        }
+        
+        /* Lucky Wheel Styles */
+        
+        .reward-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reward-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: popIn 0.5s;
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .reward-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .voucher { color: #10b981; }
+        .badge { color: #3b82f6; }
+        .water-test { color: #06b6d4; }
+        .bottle { color: #ef4444; }
+        .filter { color: #8b5cf6; }
+        .plant { color: #22c55e; }
+        .shirt { color: #f59e0b; }
+        .handmade { color: #ec4899; }
+		
+		 :where(.ui-wheel-of-fortune) {
+      --_items: 8;
+      all: unset;
+      aspect-ratio: 1 / 1;
+      container-type: inline-size;
+      direction: ltr;
+      display: grid;
+      position: relative;
+      width: 100%;
+    }
+
+    .ui-wheel-of-fortune::after {
+      aspect-ratio: 1/cos(30deg);
+      background-color: crimson;
+      clip-path: polygon(50% 100%, 100% 0, 0 0);
+      content: "";
+      height: 4cqi;
+      position: absolute;
+      place-self: start center;
+      scale: 1.4;
+    }
+
+    .ui-wheel-of-fortune > * { position: absolute; }
+
+    .ui-wheel-of-fortune button {
+      aspect-ratio: 1 / 1;
+      background: hsla(0, 0%, 100%, .8);
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 5cqi;
+      place-self: center;
+      width: 20cqi;
+    }
+
+    .ui-wheel-of-fortune ul {
+      all: unset;
+      clip-path: inset(0 0 0 0 round 50%);
+      display: grid;
+      inset: 0;
+      place-content: center start;
+    }
+
+    .ui-wheel-of-fortune li {
+      align-content: center;
+      aspect-ratio: 1 / calc(2 * tan(180deg / var(--_items)));
+      background: hsl(calc(360deg / var(--_items) * var(--_idx)), 100%, 75%);
+      clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+      display: grid;
+      font-size: 10px;
+      grid-area: 1 / -1;
+      padding-left: 1ch;
+      rotate: calc(360deg / var(--_items) * (var(--_idx) - 1));
+      transform-origin: center right;
+      user-select: none;
+      width: 50cqi;
+    }
+
+    .ui-wheel-of-fortune li:nth-of-type(1) { --_idx: 1; background-color: blue; }
+    .ui-wheel-of-fortune li:nth-of-type(2) { --_idx: 2; background-color: chartreuse; }
+    .ui-wheel-of-fortune li:nth-of-type(3) { --_idx: 3; background-color: chocolate;}
+    .ui-wheel-of-fortune li:nth-of-type(4) { --_idx: 4;background-color: crimson; }
+    .ui-wheel-of-fortune li:nth-of-type(5) { --_idx: 5;background-color: darkgoldenrod; }
+    .ui-wheel-of-fortune li:nth-of-type(6) { --_idx: 6; background-color: darkmagenta;}
+    .ui-wheel-of-fortune li:nth-of-type(7) { --_idx: 7; background-color:aqua;}
+    .ui-wheel-of-fortune li:nth-of-type(8) { --_idx: 8; background-color: darkred; }
+
+/* for demo */
+* { box-sizing: border-box; }
+		
+		#nut{
+			color: red;
+		}
+		
+		
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-leaf text-2xl text-green-500"></i>
+                <h1 class="text-xl font-bold text-green-700">GREENIQUE</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link active-nav text-green-600 font-medium">Trang chủ</a>
+                <a href="#products" class="nav-link text-gray-600 hover:text-green-600 font-medium">Sản phẩm</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-green-600 font-medium">Về chúng tôi</a>
+                <a href="#policy" class="nav-link text-gray-600 hover:text-green-600 font-medium">Chính sách</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-green-600 font-medium">Liên hệ</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <div id="userPoints" class="hidden md:flex items-center bg-green-100 px-3 py-1 rounded-full">
+                    <i class="fas fa-coins text-yellow-500 mr-1"></i>
+                    <span class="font-medium">0 điểm</span>
+                </div>
+                
+                <button id="loginBtn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
+                    Đăng nhập
+                </button>
+                
+                <button id="mobileMenuBtn" class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white py-3 px-4 shadow-lg">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="nav-link active-nav text-green-600 font-medium">Trang chủ</a>
+                <a href="#products" class="nav-link text-gray-600 hover:text-green-600 font-medium">Sản phẩm</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-green-600 font-medium">Về chúng tôi</a>
+                <a href="#policy" class="nav-link text-gray-600 hover:text-green-600 font-medium">Chính sách</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-green-600 font-medium">Liên hệ</a>
+                
+                <div class="flex items-center bg-green-100 px-3 py-1 rounded-full w-fit">
+                    <i class="fas fa-coins text-yellow-500 mr-1"></i>
+                    <span class="font-medium">0 điểm</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section text-white py-20 md:py-32 px-4">
+            <div class="container mx-auto text-center">
+                <h1 class="text-3xl md:text-5xl font-bold mb-4">Greenique – Lõi Lọc Nước Tái Chế Từ Lốp Xe</h1>
+                <p class="text-xl md:text-2xl mb-8">Giải Pháp Lọc Xanh Cho Mỗi Gia Đình Việt</p>
+                <p class="text-lg md:text-xl mb-10 italic">Tái chế thông minh – Nước sạch an toàn – Trái Đất bền vững</p>
+                <a href="#products" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition">
+                    Khám phá sản phẩm
+                </a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="py-16 px-4 bg-white">
+            <div class="container mx-auto">
+                <div class="max-w-4xl mx-auto text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Giới Thiệu</h2>
+                    <p class="text-gray-600 mb-6">
+                        Từ 20 – 30 triệu lốp xe được Việt Nam thải ra mà quên mất việc tái chế chúng, để chúng bị vùi lấp bới mặt đất trong quên lãng. 
+                    </p>
+                    <p class="text-gray-600">
+                        Nhận thấy vấn đề đó, Greenique mang đến một bước tiến mới trong công nghệ lọc nước: lõi lọc than hoạt tính tái chế từ lốp xe phế thải. Với cấu trúc carbon siêu xốp, khả năng hấp phụ mạnh và thân thiện với môi trường, sản phẩm không chỉ giúp bạn có nước sạch mag còn góp phần giảm rác thải toàn cầu.
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="bg-green-50 p-6 rounded-lg text-center">
+                        <i class="fas fa-recycle text-4xl text-green-600 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">100% tái chế</h3>
+                        <p class="text-gray-600">Nguyên liệu từ lốp xe cao su và rác thải công nghiệp</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg text-center">
+                        <i class="fas fa-filter text-4xl text-green-600 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Hấp phụ mạnh</h3>
+                        <p class="text-gray-600">Loại bỏ clo, kim loại nặng và hợp chất hiệu quả</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg text-center">
+                        <i class="fas fa-leaf text-4xl text-green-600 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Bảo vệ môi trường</h3>
+                        <p class="text-gray-600">Giảm rác thải, tiết kiệm chi phí</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg text-center">
+                        <i class="fas fa-cogs text-4xl text-green-600 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Dễ thay thế</h3>
+                        <p class="text-gray-600">Tương thích nhiều dòng máy lọc nước</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="py-16 px-4 bg-gray-50">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Sản Phẩm</h2>
+                
+                <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                    <div class="product-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300">
+                        <img src="https://i.pinimg.com/736x/5f/90/c9/5f90c9f9042ba12345c2798632e7ea62.jpg"
+                             alt="Greenique Eco 2" class="w-full product-image">
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-bold text-green-700 mb-2">Greenique Eco 2</h3>
+                        <p class="text-gray-600 mb-6">
+                            Lõi lọc được sản xuất từ than hoạt tính tái chế - nguồn gốc lốp xe phế thải. Ứng dụng công nghệ nhiệt phân và hoạt hóa hiện đại, sản phẩm có độ xốp cao, khả năng hấp phụ mạnh mẽ, thân thiện với sức khỏe và môi trường.
+                        </p>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-bold text-lg mb-3">Thông số sản phẩm</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-gray-200">
+                                    <tbody>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 px-4 font-semibold">Loại than</td>
+                                            <td class="py-2 px-4">Than hoạt tính tái chế từ lốp xe</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 px-4 font-semibold">Kích thước</td>
+                                            <td class="py-2 px-4">10 inch tiêu chuẩn (OCB)</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 px-4 font-semibold">Lưu lượng tối đa</td>
+                                            <td class="py-2 px-4">150L/1H</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 px-4 font-semibold">Thời gian sử dụng</td>
+                                            <td class="py-2 px-4">Tối đa 12 tháng</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 px-4 font-semibold">Chức năng chính</td>
+                                            <td class="py-2 px-4">Hấp phụ clo, màu, mùi, VOCs, kim loại nặng</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-4 font-semibold">Tương thích</td>
+                                            <td class="py-2 px-4">Máy lọc RO Karofi, Sunhouse, Kangaroo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-bold text-lg mb-2">Lợi ích khi sử dụng</h4>
+                            <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                                <li>Bảo vệ sức khỏe: loại bỏ tạp chất ảnh hưưởng đến vị và mùi nước</li>
+                                <li>Tiết kiệm hơn: giá tốt hơn 10-20% so với than gáo dừa nhập khẩu</li>
+                                <li>Thân thiện môi trường: tái chế thông minh, giảm rác thải môi trường</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="mb-4 md:mb-0">
+                                <span class="text-2xl font-bold text-green-600">160.000đ</span>
+                            </div>
+                            <a href="https://shopee.vn" target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-full transition text-center">
+                                Mua ngay
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- About Greenique Section -->
+        <section id="about" class="py-16 px-4 bg-white">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Về Greenique</h2>
+                
+                <div class="mb-12">
+                    <h3 class="text-xl font-bold text-green-700 mb-4">Greenique là ai?</h3>
+                    <p class="text-gray-600 mb-6">
+                        GREENIQUE VIỆT NAM là đơn vị tiên phong trong việc nghiên c cứu và sản xuất lõi lọc nước từ vật liệu tái chế từ LỐP XE, đặc biệt là than hoạt tính từ lốp xe phế thải – góp phần nào vào mô hình kinh tế tuần hoàn trong ngành xử lý nước.
+                    </p>
+                    <p class="text-gray-600 mb-6 italic">
+                        GREENIQUE VIỆT NAM tin rằng:<br>
+                        Công nghệ xanh là tương lai<br>
+                        Mỗi sản phẩm tốt không chỉ vì lợi nhuận, mà còn vì xã hội, cộng đồng, nơi ta sống
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-green-700 mb-4">Sứ mệnh</h3>
+                        <p class="text-gray-600">
+                            Đưa nước sạch đến từng nhà – không đánh đổi môi trường
+                        </p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-green-700 mb-4">Giá trị cốt lõi</h3>
+                        <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                            <li>Sáng tạo công nghệ xanh</li>
+                            <li>Tận tâm vì sức khỏe cộng đồng</li>
+                            <li>Cam kết minh bạch – Chất lượng – Trách nhiệm môi trường</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+         <!-- About Greenique Section -->
+        <section id="about" class="py-16 px-4 bg-white">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Tái chế lốp xe – Giải pháp kép: Bảo vệ môi trường & bảo vệ sức khỏe gia đình</h2>
+                
+                <div class="mb-12">
+                    <h3 class="text-xl font-bold text-green-700 mb-4">Bạn có biết?</h3>
+                    <p class="text-gray-600 mb-6">
+                        Mỗi năm Việt Nam thải ra 20-30 triệu lốp xe cũ… Lốp xe sau khi hết vòng đời thường bị vứt bỏ bừa bãi, đốt ngoài trời oặc chôn lấp, gây ra lượng khí thải độc hại và ô nhiễm đất nghiêm trọng. Theo thống kê, một chiếc lốp xe có thể mất 50–80 năm mới phân h hủy hoàn toàn – đồng nghĩa với việc rác thải cao su này sẽ tiếp tục "ám ảnh" môi trường suốt nhiều thế hệ.
+                    </p>
+                    <p class="text-gray-600 mb-6">
+                        Nhưng điều đáng mừng là: những chiếc lốp xe tưưởng chừng vô dụng này lại có thể được "hồi sinh" thành sản phẩm bảo vệ sức khỏe: than hoạt tính tái chế – thành phần quan trọng trong lõi lọc nước.
+                    </p>
+                    
+                    <h3 class="text-xl font-bold text-green-700 mb-4 mt-8">Tái chế thông minh – Lõi lọc than hoạt tính từ lốp xe</h3>
+                    <p class="text-gray-600 mb-6">
+                        Thay vì để lốp xe trở thành gánh nặng môi trường, các tổ chức vì môi trường và doanh nghiệp tiên phong đã hướng tới nghiên c cứu quy trình tái chế khép kín:
+                    </p>
+                    <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-6">
+                        <li>Lốp xe cũ được xử lý ở nhiệt độ cao (>900°C) trong môi trường yếm khí</li>
+                        <li>Trải qua quá trình nhiệt phân (350-600°C) để loại bỏ tạp chất, chỉ giữ lại carbon tinh khiết</li>
+                        <li>Sau đó được hoạt hóa vật lý tạo ra than hoạt tính siêu hấp phụ, dùng làm lõi lọc nước có độ xốp cao, diện tích bề mặt lớn, khả năng hấp phụ vượt trội các tạp chất độc hại như clo, kim loại nặng, thuốc trừ sâu, vi khuẩn…</li>
+                    </ul>
+                    
+                    <h3 class="text-xl font-bold text-green-700 mb-4 mt-8">Vì sao người tiêu dùng thông minh nên ưu tiên lõi lọc từ than tái chế?</h3>
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-green-700 mb-2">An toàn tuyệt đối cho sức khỏe</h4>
+                            <p class="text-gray-600">Khả năng lọc được kiểm nghiệm đạt chuẩn nước uống trực tiếp (đủ đạt chứng chỉ NSF – chứng nhận sản phẩm theo các tiêu chuẩn nghiêm ngặt về an toàn sức khỏe và môi trường). An tâm dùng cho gia đình</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-green-700 mb-2">Hiệu suất lọc cao</h4>
+                            <p class="text-gray-600">Than hoạt tính từ lốp xe có độ xốp và diện tích bề mặt lớn hơn so với than gáo dừa thông thường, nên lọc được chất hữu cơ phức tạp (thusốc trừ sâu, thuốc nhuộm, phenol), kim loại nặng (Cd²⁺, Pb²⁺, Cr⁶⁺) giúp nguồn nước vào lối sống siêu tinh khiết</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-green-700 mb-2">Thân thiện môi trường</h4>
+                            <p class="text-gray-600">Quy trình tái chế lốp xe giúp giảm rác thải, giảm khí CO₂ từ đốt lốp xe. Góp phần vào xu hướng tiêu dùng bền vững</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-green-700 mb-2">Giá cả hợp lý</h4>
+                            <p class="text-gray-600">Giá thành tốt hơn 10-20% so với than gáo dừa nhập khẩu, giảm chi phí cho gia đình</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-green-700 mb-4 mt-8">Giải pháp lọc nước sạch sành sanh – Bền vững cho gia đình bạn</h3>
+                    <p class="text-gray-600 mb-6">
+                        Gia đình bạn xứng đáng được bảo vệ bởi những công nghệ hiện đại, nhưng điều đó không nhất thiết phải đắt đỏ hay gây hại cho môi trường. Sử dụng lõi lọc nước than hoạt tính từ lốp xe tái chế chính là lựa chọn thông minh và nhân văn, vừa tiết kiệm, vừa sạch sành sanh từ nguồn nước tới lối sống.
+                    </p>
+                    
+                    <div class="bg-green-100 p-6 rounded-lg text-center mt-8">
+                        <p class="text-lg font-bold text-green-700 mb-4">ĐỪNG ĐỂ LỐP XE CŨ TRỞ THÀNH GÁNH NẶNG</p>
+                        <p class="text-lg font-bold text-green-700 mb-4">HãY BIẾN NÓ THÀNH NGUỒN SỐNG MỚI!</p>
+                        <p class="text-gray-600">Mỗi lõi lọc bạn chọn không chỉ lọc sạch nước, mà còn lọc sạch cả tương lai</p>
+                        <a href="#products" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition mt-6">
+                            Xem sản phẩm ngay
+                        </a>
+                    </div>
+                </div>
+                
+                
+                </div>
+            </div>
+        </section>
+
+        <!-- Collect Points Section -->
+        <section class="py-16 px-4 bg-green-600 text-white">
+            <div class="container mx-auto max-w-5xl">
+                <h2 class="text-3xl font-bold text-center mb-12">Nộp Sản Phẩm - Tích Điểm Xanh</h2>
+                
+                <div class="bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden mb-12">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-green-100">
+                                <tr>
+                                    <th class="py-3 px-4 text-left font-bold">Vật liệu thu gom</th>
+                                    <th class="py-3 px-4 text-left font-bold">Hướng dẫn thu gom</th>
+                                    <th class="py-3 px-4 text-left font-bold">Số lượng</th>
+                                    <th class="py-3 px-4 text-left font-bold">Điểm thưưởng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200">
+                                    <td class="py-3 px-4">Vỏ chai nhựa HDPE / PP (Vd: chai sữa, can nhựa)</td>
+                                    <td class="py-3 px-4">Rửa sạch, để ráo, bỏ nắp. Chỉ nhận nhựa cứng: chai sữa, can dầu gội, nắp hộp sữa chua</td>
+                                    <td class="py-3 px-4">10 chai nhựa < 1L hoặc 2 can 5L</td>
+                                    <td class="py-3 px-4 font-bold">6 điểm</td>
+                                </tr>
+                                <tr class="border-b border-gray-200">
+                                    <td class="py-3 px-4">Lõi lọc Greenique đã qua sử dụng</td>
+                                    <td class="py-3 px-4">Không cần rửa. Đóng túi riêng, ghi rõ số lượng. Chỉ nhận lõi không h h hỏng nặng</td>
+                                    <td class="py-3 px-4">1 lõi lọc</td>
+                                    <td class="py-3 px-4 font-bold">20 điểm</td>
+                                </tr>
+                                <tr class="border-b border-gray-200">
+                                    <td class="py-3 px-4">Lõi lọc nước thông thường cũ</td>
+                                    <td class="py-3 px-4">Đã lau khô, không ẩm móc, còn nguyên vẹn, không vỡ nát, bỏ vào túi riêng ghi số lượng</td>
+                                    <td class="py-3 px-4">1 lõi lọc</td>
+                                    <td class="py-3 px-4 font-bold">10 điểm</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">Lốp xe cũ</td>
+                                    <td class="py-3 px-4">Lốp xe qua sử dụng, không rách nát quá nhiều, không chứa rác, chất thải độc hại, rửa sơ bằng nước sạch</td>
+                                    <td class="py-3 px-4">1 lốp xe</td>
+                                    <td class="py-3 px-4 font-bold">30 điểm</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-4 bg-gray-50 text-sm text-gray-600">
+                        *Các sản phẩm không đạt yêu cầu sẽ trả lại và không tính điểm
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-3">Ưu đãi tích điểm thêm</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-plus-circle mt-1 mr-2"></i>
+                                <span>Nộp combo bất kỳ 3 loại vật liệu: +5 điểm</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-plus-circle mt-1 mr-2"></i>
+                                <span>Nộp liên tiếp 3 lần trong tháng: +10 điểm</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-plus-circle mt-1 mr-2"></i>
+                                <span>Mời bạn bè tham gia: +5 điểm/người</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-3">Tích điểm khi mua lõi lọc</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-filter mt-1 mr-2"></i>
+                                <span>Lõi lọc thô: 5 điểm</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-filter mt-1 mr-2"></i>
+                                <span>Lõi lọc trọng lực dân dụng: 10 điểm</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-filter mt-1 mr-2"></i>
+                                <span>Lõi lọc than hoạt tính GAC: 10 điểm</span>
+                            </li>
+                            <li class="font-bold mt-3">Combo 3 lõi lọc: 30 điểm</li>
+                            <li class="font-bold">3 combo: 1 lượt quay may mắn</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-3">Vòng quay may mắn</h3>
+                        <p class="mb-4">150 điểm / lượt quay</p>
+                        <fieldset class="ui-wheel-of-fortune">
+    					<ul>
+     						 <li>Voucher 200K <br>Greenique</li>
+     						 <li>Huy hiệu <br>Chiến binh xanh</li>
+     						 <li>Gói kiểm tra <br>chất lượng nước</li>
+      						<li>Bình giữ nhiệt <br>Greenique </li>
+      						<li>Bình lọc nước trọng lực</li>
+      						<li>Cây thủy sinh</li>
+      						<li>Áo thun Greenique</li>
+      						<li>Quà tái chế handmade</li>
+    				</ul>
+    					<button type="button" id="nut" >SPIN</button>
+  					</fieldset>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button id="submitProductBtn" class="bg-white text-green-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-100 transition">
+                        Nộp sản phẩm
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards Section -->
+        <section class="py-16 px-4 bg-gray-50">
+            <div class="container mx-auto max-w-6xl">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Quy Đổi Điểm Thưởng</h2>
+                
+                <!-- Reward Products Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                    <!-- Reward Product 1 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300">
+                        <div class="bg-green-100 py-4 px-6 text-center">
+                            <span class="text-2xl font-bold text-green-700">20 điểm</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Voucher giảm 5%</h3>
+                            <p class="text-gray-600 mb-4">Giảm 5% cho đơn hàng tiếp theo tại Greenique. Áp dụng cho tất cả sản phẩm.</p>
+                            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition">
+                                Đổi ngay
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Reward Product 2 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300">
+                        <div class="bg-green-100 py-4 px-6 text-center">
+                            <span class="text-2xl font-bold text-green-700">40 điểm</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Móc khóa Greenique</h3>
+                            <p class="text-gray-600 mb-4">Móc khóa logo Greenique làm từ vật liệu tái chế, thiết kế độc đáo.</p>
+                            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition">
+                                Đổi ngay
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Reward Product 3 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300">
+                        <div class="bg-green-100 py-4 px-6 text-center">
+                            <span class="text-2xl font-bold text-green-700">60 điểm</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Bộ lọc vòi mini</h3>
+                            <p class="text-gray-600 mb-4">Bộ lọc nước mini cho vòi rửa tay, tiện lợi khi đi du lịch, dã ngoại.</p>
+                            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition">
+                                Đổi ngay
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Reward Product 4 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300">
+                        <div class="bg-green-100 py-4 px-6 text-center">
+                            <span class="text-2xl font-bold text-green-700">90 điểm</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Áo thun Greenique</h3>
+                            <p class="text-gray-600 mb-4">Áo thun chất liệu organic cotton, in logo Greenique (số lượng có hạn).</p>
+                            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition">
+                                Đổi ngay
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Reward Product 5 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300">
+                        <div class="bg-green-100 py-4 px-6 text-center">
+                            <span class="text-2xl font-bold text-green-700">120 điểm</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Set lõi lọc mini</h3>
+                            <p class="text-gray-600 mb-4">Bộ lọc nước mini cá nhân dành cho dã ngoại, đi du lịch.</p>
+                            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition">
+                                Đổi ngay
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Reward Product 6 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300">
+                        <div class="bg-green-100 py-4 px-6 text-center">
+                            <span class="text-2xl font-bold text-green-700">200 điểm</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Combo lõi lọc miễn phí</h3>
+                            <p class="text-gray-600 mb-4">Combo lõi lọc thay thế + dịch vụ bảo trì tại nhà miễn phí.</p>
+                            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition">
+                                Đổi ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Points Info -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Thông tin điểm thưởng</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold text-green-700 mb-2">Cách tích điểm</h4>
+                            <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                                <li>Mua sản phẩm Greenique: 1 điểm/10.000đ</li>
+                                <li>Nộp lõi lọc đã qua sử dụng: 15 điểm/lõi</li>
+                                <li>Nộp chai nhựa tái chế: 6 điểm/10 chai</li>
+                                <li>Giới thiệu bạn bè: 5 điểm/người</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-green-700 mb-2">Điều khoản</h4>
+                            <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                                <li>Điểm có hiệu lực trong 6 tháng</li>
+                                <li>Mỗi phần quà chỉ đổi 1 lần/khách hàng</li>
+                                <li>Áp dụng cho khách hàng có tài khoản</li>
+                                <li>Không cộng dồn với chương trình khác</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Policy Section -->
+        <section id="policy" class="py-16 px-4 bg-white">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Chính Sách</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-green-700 mb-3">Vận chuyển</h3>
+                        <p class="text-gray-600">Giao hàng toàn quốc, freeship đơn từ 500.000đ</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-green-700 mb-3">Bảo hành</h3>
+                        <p class="text-gray-600">1 đổi 1 nếu lỗi kỹ thuật trong vòng 1 tháng</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-green-700 mb-3">Đổi trả</h3>
+                        <p class="text-gray-600">Hỗ trợ đổi trả trong 15 ngày nếu chưa sử dụng</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-green-700 mb-3">Bảo mật</h3>
+                        <p class="text-gray-600">Không chia sẻ thông tin cá nhân khách hàng</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 px-4 bg-gray-800 text-white">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-3xl font-bold text-center mb-12">Liên Hệ</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Thông tin liên hệ</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1 mr-3"></i>
+                                <span>08xx.xxx.xxx</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-3"></i>
+                                <span>support@greenique.vn</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
+                                <span>Địa chỉ: tương lai</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-6">
+                            <h3 class="text-xl font-bold mb-4">Mạng xã hội</h3>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700 transition">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="bg-pink-600 w-10 h-10 rounded-full flex items-center justify-center hover:bg-pink-700 transition">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                                <a href="#" class="bg-orange-500 w-10 h-10 rounded-full flex items-center justify-center hover:bg-orange-600 transition">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Gửi tin nhắn cho chúng tôi</h3>
+                        <form class="space-y-4">
+                            <div>
+                                <input type="text" placeholder="Họ và tên" class="w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </div>
+                            <div>
+                                <input type="email" placeholder="Email" class="w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </div>
+                            <div>
+                                <input type="tel" placeholder="Số điện thoại" class="w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </div>
+                            <div>
+                                <textarea placeholder="Nội dung" rows="4" class="w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+                            </div>
+                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition">
+                                Gửi tin nhắn
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fas fa-leaf text-2xl text-green-500"></i>
+                    <h1 class="text-xl font-bold text-white">GREENIQUE</h1>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="mb-2">© 2023 Greenique Việt Nam. All rights reserved.</p>
+                    <p class="text-sm">Giải pháp lọc nước xanh từ vật liệu tái chế</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Đăng nhập</h3>
+                <button id="closeLoginModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="email" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Mật khẩu</label>
+                    <input type="password" id="password" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                        <label for="remember" class="ml-2 block text-sm text-gray-700">Ghi nhớ đăng nhập</label>
+                    </div>
+                    
+                    <a href="#" class="text-sm text-green-600 hover:text-green-700">Quên mật khẩu?</a>
+                </div>
+                
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
+                    Đăng nhập
+                </button>
+                
+                <div class="text-center text-sm">
+                    <p>Chưa có tài khoản? <a href="#" class="text-green-600 hover:text-green-700 font-medium">Đăng ký ngay</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Submit Product Modal -->
+    <div id="submitProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Nộp Sản Phẩm</h3>
+                <button id="closeSubmitModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Loại sản phẩm</label>
+                    <select class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option value="">Chọn loại sản phẩm</option>
+                        <option value="plastic">Vỏ chai nhựa HDPE/PP</option>
+                        <option value="filter">Lõi lọc Greenique đã qua sử dụng</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Số lượng</label>
+                    <input type="number" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Hình ảnh sản phẩm</label>
+                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                        <div class="space-y-1 text-center">
+                            <div class="flex text-sm text-gray-600">
+                                <label class="relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none">
+                                    <span>Tải ảnh lên</span>
+                                    <input type="file" class="sr-only">
+                                </label>
+                                <p class="pl-1">hoặc kéo thả tại đây</p>
+                            </div>
+                            <p class="text-xs text-gray-500">PNG, JPG, GIF tối đa 10MB</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <input type="checkbox" id="combo" class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                    <label for="combo" class="ml-2 block text-sm text-gray-700">Nộp combo 3 loại vật liệu (+5 điểm)</label>
+                </div>
+                
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
+                    Xác nhận nộp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reward Modal -->
+    <div id="rewardModal" class="reward-modal">
+        <div class="reward-content">
+            <div id="rewardIcon" class="reward-icon"></div>
+            <h3 id="rewardTitle" class="text-2xl font-bold mb-4"></h3>
+            <p id="rewardDesc" class="text-gray-600 mb-6"></p>
+            <button id="closeRewardModal" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition">
+                Đóng
+            </button>
+        </div>
+    </div>
+
+    <script>
+	function wheelOfFortune(selector) {
+      const node = document.querySelector(selector);
+      if (!node) return;
+
+      const spin = node.querySelector('button');
+      const wheel = node.querySelector('ul');
+      let animation;
+      let previousEndDegree = 0;
+
+      spin.addEventListener('click', () => {
+        if (animation) {
+          animation.cancel(); // Reset the animation if it already exists
+		}
+		  const randomAdditionalDegrees = Math.random() * 360 + 1800;
+        const newEndDegree = previousEndDegree + randomAdditionalDegrees;
+
+        animation = wheel.animate([
+          { transform: `rotate(${previousEndDegree}deg)` },
+          { transform: `rotate(${newEndDegree}deg)` }
+        ], {
+          duration: 4000,
+          direction: 'normal',
+          easing: 'cubic-bezier(0.440, -0.205, 0.000, 1.130)',
+          fill: 'forwards',
+          iterations: 1
+        });
+
+        previousEndDegree = newEndDegree;
+      });
+    }
+
+    wheelOfFortune('.ui-wheel-of-fortune');
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Login modal
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+        
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+        });
+        
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+        });
+        
+        // Submit product modal
+        const submitProductBtn = document.getElementById('submitProductBtn');
+        const submitProductModal = document.getElementById('submitProductModal');
+        const closeSubmitModal = document.getElementById('closeSubmitModal');
+        
+        submitProductBtn.addEventListener('click', () => {
+            submitProductModal.classList.remove('hidden');
+        });
+        
+        closeSubmitModal.addEventListener('click', () => {
+            submitProductModal.classList.add('hidden');
+        });
+        
+        // Reward modal
+        const rewardModal = document.getElementById('rewardModal');
+        const closeRewardModal = document.getElementById('closeRewardModal');
+        
+        closeRewardModal.addEventListener('click', () => {
+            rewardModal.style.display = 'none';
+        });
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active-nav', 'text-green-600');
+                    link.classList.add('text-gray-600');
+                });
+                
+                this.classList.add('active-nav', 'text-green-600');
+                this.classList.remove('text-gray-600');
+                
+                // Close mobile menu if open
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Points system simulation
+        let userPoints = 0;
+        const pointsDisplay = document.getElementById('userPoints');
+        
+        // Simulate login (in a real app, this would come from backend)
+        function simulateLogin() {
+            // Show points display
+            pointsDisplay.classList.remove('hidden');
+            // Add some initial points for demo
+            userPoints = 25;
+            updatePointsDisplay();
+        }
+        
+        function updatePointsDisplay() {
+            pointsDisplay.innerHTML = `<i class="fas fa-coins text-yellow-500 mr-1"></i><span class="font-medium">${userPoints} điểm</span>`;
+        }
+        
+        // For demo purposes, simulate login after clicking login button
+        loginBtn.addEventListener('click', simulateLogin);
+        
+        // Handle form submissions (would be AJAX in real app)
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Form submitted! In a real app, this would send data to the server.');
+                
+                // For demo, add some points when submitting products
+                if (form.closest('#submitProductModal')) {
+                    userPoints += 15; // Add points for demo
+                    updatePointsDisplay();
+                    submitProductModal.classList.add('hidden');
+                }
+                
+                if (form.closest('#loginModal')) {
+                    loginModal.classList.add('hidden');
+                    simulateLogin();
+                }
+            });
+        });
+        
+        // Lucky Wheel Implementation
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spinButton');
+        let isSpinning = false;
+        
+        // Wheel rewards
+        const rewards = [
+            { 
+                name: "Voucher 200k Greenique", 
+                description: "Voucher trị giá 200.000đ áp dụng cho tất cả sản phẩm của Greenique",
+                icon: "fa-ticket-alt",
+                color: "voucher"
+            },
+            { 
+                name: "Huy hiệu Chiến binh xanh", 
+                description: "Huy hiệu đặc biệt với logo Greenique làm từ vật liệu tái chế",
+                icon: "fa-medal",
+                color: "badge"
+            },
+            { 
+                name: "Kiểm tra chất lượng nước", 
+                description: "Gói kiểm tra chất lượng nước miễn phí tại nhà",
+                icon: "fa-flask",
+                color: "water-test"
+            },
+            { 
+                name: "Bình giữ nhiệt", 
+                description: "Bình giữ nhiệt thân thiện môi trường, dung tích 500ml",
+                icon: "fa-mug-hot",
+                color: "bottle"
+            },
+            { 
+                name: "Bình lọc nước", 
+                description: "Bình lọc nước trọng lực dân dụng của Greenique",
+                icon: "fa-filter",
+                color: "filter"
+            },
+            { 
+                name: "Cây thuỷ sinh", 
+                description: "Cây thuỷ sinh để bàn hoặc sen đá trồng trong chậu tái chế",
+                icon: "fa-leaf",
+                color: "plant"
+            },
+            { 
+                name: "Áo thun Greenique", 
+                description: "Áo thun chất liệu organic cotton in logo Greenique",
+                icon: "fa-tshirt",
+                color: "shirt"
+            },
+            { 
+                name: "Quà handmade", 
+                description: "Quà tặng làm từ vật liệu tái chế handmade độc đáo",
+                icon: "fa-hands-helping",
+                color: "handmade"
+            }
+        ];
+        
+        // Colors for wheel sections
+        const colors = [
+            '#10B981', '#3B82F6', '#EF4444', '#F59E0B', 
+            '#8B5CF6', '#EC4899', '#06B6D4', '#22C55E'
+        ];
+        
+        // Create wheel sections
+        function createWheel() {
+            const sectionAngle = 360 / rewards.length;
+            
+            rewards.forEach((reward, index) => {
+                const section = document.createElement('div');
+                section.className = 'wheel-section';
+                section.style.transform = `rotate(${index * sectionAngle}deg)`;
+                section.style.backgroundColor = colors[index];
+                
+                const span = document.createElement('span');
+                span.textContent = reward.name.split(' ')[0]; // Show first word of reward
+                section.appendChild(span);
+                
+                wheel.appendChild(section);
+            });
+        }
+        
+        // Spin the wheel
+        function spinWheel() {
+            if (isSpinning) return;
+            
+            // Check if user has enough points
+            if (userPoints < 150) {
+                alert(`Bạn cần 150 điểm để quay. Hiện tại bạn có ${userPoints} điểm.`);
+                return;
+            }
+            
+            isSpinning = true;
+            userPoints -= 150;
+            updatePointsDisplay();
+            
+            const spinDuration = 4000; // 4 seconds
+            const spins = 5; // Number of full rotations
+            const randomAngle = Math.floor(Math.random() * 360);
+            const totalRotation = spins * 360 + randomAngle;
+            
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            setTimeout(() => {
+                isSpinning = false;
+                
+                // Calculate which reward was won
+                const sectionAngle = 360 / rewards.length;
+                const winningIndex = Math.floor(((360 - (totalRotation % 360)) % 360) / sectionAngle);
+                const reward = rewards[winningIndex];
+                
+                // Show reward modal
+                showReward(reward);
+            }, spinDuration);
+        }
+        
+        // Show reward modal
+        function showReward(reward) {
+            const rewardIcon = document.getElementById('rewardIcon');
+            const rewardTitle = document.getElementById('rewardTitle');
+            const rewardDesc = document.getElementById('rewardDesc');
+            
+            rewardIcon.className = `reward-icon ${reward.color}`;
+            rewardIcon.innerHTML = `<i class="fas ${reward.icon}"></i>`;
+            rewardTitle.textContent = reward.name;
+            rewardDesc.textContent = reward.description;
+            
+            rewardModal.style.display = 'flex';
+        }
+        
+        // Initialize wheel
+        createWheel();
+        
+        // Event listeners
+        spinButton.addEventListener('click', spinWheel);
+        
+        // Handle reward exchange buttons
+        document.querySelectorAll('.bg-green-100 + div button').forEach(button => {
+            button.addEventListener('click', function() {
+                const pointsRequired = parseInt(this.closest('.bg-green-100').textContent);
+                
+                if (userPoints >= pointsRequired) {
+                    userPoints -= pointsRequired;
+                    updatePointsDisplay();
+                    alert('Đổi quà thành công! Chúng tôi sẽ liên hệ với bạn để giao quà.');
+                } else {
+                    alert(`Bạn không đủ điểm để đổi quà này. Cần ${pointsRequired} điểm, hiện có ${userPoints} điểm.`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
